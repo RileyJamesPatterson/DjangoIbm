@@ -17,8 +17,8 @@ urlpatterns = [
     # ex: /enroll/5/
     path('<int:course_id>/enroll/', views.enroll, name='enroll'),
 
-    # <HINT> Create a route for submit view  ADD SUBMIT TEMPLATE AND IMPLEMENT SUBMIT VIEW
-    path('<int:pk>/submit/', views.CourseDetailView.as_view(), name='submit'),
+    # <HINT> Create a route for submit view 
+    path('<int:course_id>/submit/', views.submit, name='submit'),
 
     # <HINT> Create a route for show_exam_result view
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 # <HINT> Import any new Models here
-from .models import Course, Enrollment,Question,Choice
+from .models import Course, Enrollment,Question,Choice,Submission
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -111,18 +111,34 @@ def enroll(request, course_id):
          # Add each selected choice object to the submission object
          # Redirect to show_exam_result with the submission id
 def submit(request, course_id):
-    pass # TO IMPLEMENT
-
+    #get the correct course record from the Course table
+    course = get_object_or_404(Course, pk=course_id)
+    user = request.user
+    enrol=Enrollment.objects.get(user=user,course=course)
+    choices= extract_answers(request
+                             )
+    sub=Submission(enrollment=enrol)
+    sub.save()
+    for choice in choices:
+        sub.choices.add(choice)
+    print(user)
+    print(enrol)
+    print(choices)
+    if request.method=="POST":
+        print("We've hit submit !!!")
+    ##place holder for results page
+    
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:index',args=()))
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
-#def extract_answers(request):
-#    submitted_anwsers = []
-#    for key in request.POST:
-#        if key.startswith('choice'):
-#            value = request.POST[key]
-#            choice_id = int(value)
-#            submitted_anwsers.append(choice_id)
-#    return submitted_anwsers
+def extract_answers(request):
+    submitted_anwsers = []
+    for key in request.POST:
+        if key.startswith('choice'):
+            value = request.POST[key]
+            choice_id = int(value)
+            submitted_anwsers.append(choice_id)
+    return submitted_anwsers
 
 
 # <HINT> Create an exam result view to check if learner passed exam and show their question results and result for each question,
