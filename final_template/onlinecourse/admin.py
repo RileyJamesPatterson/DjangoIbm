@@ -9,7 +9,7 @@ class ChoiceInLine(admin.StackedInline):
 
 class QuestionInline(admin.StackedInline):
     model=Question
-    fields=('question_text','course')
+    
     extra=10
 
 class LessonInline(admin.StackedInline):

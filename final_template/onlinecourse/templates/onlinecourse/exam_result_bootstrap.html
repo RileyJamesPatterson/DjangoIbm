@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-
  <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -38,16 +37,45 @@
 <div class="container-fluid">
     {% if grade > 80 %}
     <div class="alert alert-success">
-       <!--HINT Display passed info -->
+       <b>Congratulations {{user}}!</b> You Passed the exam and completed the course with a score of {{grade}}/100
     </div>
         {% else %}
         <div class="alert alert-danger">
-            <!--HINT Display failed info -->
+        <b>Failed</b> Sorry {{user}} - You have failed the exam with a grade of {{grade}}/100
         </div>
         <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
         {% endif %}
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
+            {% for question in course.question_set.all %}
+                <div class="card-header"><h5>{{question.question_text}},</h5></div>
+                {% for answer in question.choice_set.all %}
+                    
+                    {% if answer in selected_ids and answer.is_correct %}
+                        <li class="text-success">
+                        Correct answer: {{answer.choice_text}}  &lt-Selected
+                        </li>
+
+                    {% elif answer in selected_ids and not answer.is_correct %}
+                        <li class="text-danger">
+                            Incorrect answer: {{answer.choice_text}}  &lt-Selected
+                        </li>
+
+                    {% elif anser not in selected_ids and answer.is_correct %}
+                        <li class="text-warning">
+                            Not selected: {{answer.choice_text}} 
+                        </li>
+                     
+                    {% else %}
+                        <li>
+                        {{answer.choice_text}}
+                        </li>
+
+                    {% endif %}    
+                    </li>
+                {% endfor %}
+
+            {% endfor %}
             <!--HINT Display exam results-->
         </div>
     </div>

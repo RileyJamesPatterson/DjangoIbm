@@ -154,6 +154,7 @@ def show_exam_result(request,course_id,submission_id):
     context["total_grade"]=total_grade
     context["correct"]=correct
     context["grade"]=(correct/total_grade*100) if total_grade != 0 else 0
+    print((correct/total_grade*100) if total_grade != 0 else 0)
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 # <HINT> Create an exam result view to check if learner passed exam and show their question results and result for each question,
